@@ -1,0 +1,19 @@
+address: "2 Tilak Road, Kolkata, West Bengal, 700029"
+carmodel: "Tata Nano"
+carnumber: "WB02S8998"
+cost: "800"
+distanceFromDest: 158.26325728464454
+dlat: 22.51865
+dlon: 88.3512
+from: "2020-10-24 10:44:03"
+handler: "Visvayu"
+handlerphone: "9538833242"
+id: "2"
+lat: "22.519035354039"
+lon: "88.352681435645"
+nearest: true
+num: 4
+owner: "12200116031s@gmail.com"
+timeslot: "1"
+to: "2020-10-25 10:44:03"
+type: "1"

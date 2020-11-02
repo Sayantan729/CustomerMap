@@ -1,0 +1,199 @@
+<div
+  class="row row-cols-1 row-cols-lg-2 justify-content-around customer-base-div"
+>
+  <div class="col col-lg-8 p-0 m-0">
+    <div
+      id="customer-search-map-text"
+      style="position: relative; width: 90%; margin-top: 50px; z-index: 1000"
+    >
+      <div
+        class="input-group mb-3"
+        style="
+          border-radius: 15em/15em;
+          background-color: white;
+          box-shadow: 2px 2px 10px black;
+        "
+      >
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Where to?"
+          style="
+            font-size: xx-large;
+            background-color: transparent;
+            border: none;
+            outline: none;
+          "
+          [(ngModel)]="searchString"
+          (keyup)="searchStart()"
+          #searchBar
+        />
+      </div>
+      <div class="row row-cols-1 row-cols-lg-2">
+        <div
+          style="padding-right: 20px"
+          class="col col-lg-8 order-2 order-lg-1"
+        >
+          <div class="list-group" *ngIf="searching">
+            <li
+              class="list-group-item list-group-item-action"
+              *ngFor="let result of searchResults"
+              (click)="locateDestination(result)"
+            >
+              <p *ngIf="result.name" class="search-heading">
+                {{ result.name }}
+              </p>
+              <p
+                [class]="result.name ? 'search-sub-heading' : 'search-heading'"
+              >
+                {{ result.address }}
+              </p>
+            </li>
+          </div>
+        </div>
+
+        <div class="col col-lg-4 order-1 order-lg-2">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <label
+                class="input-group-text"
+                for="selectRadius"
+                style="background-color: white"
+                >Search radius</label
+              >
+            </div>
+            <select
+              class="custom-select"
+              id="selectRadius"
+              (change)="setProximity($event)"
+            >
+              <option selected value="200">200 m</option>
+              <option value="300">300 m</option>
+              <option value="400">400 m</option>
+              <option value="500">500 m</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="w-100" style="height: calc(100vh)">
+      <div
+        id="customer-parking-search-map"
+        style="height: 100%; width: 100%; margin: auto"
+      ></div>
+    </div>
+
+    <div
+      id="customer-map-legend"
+      style="
+        background-color: white;
+        font-size: 1.2em;
+        box-shadow: 0px 0px 5px black;
+        border-radius: 5px;
+      "
+      class="row row-cols-1 p-3 m-3"
+    >
+      <div class="col my-2">
+        <img src="assets/icons/location32.png" alt="" />
+        <span>Your Destination</span>
+      </div>
+      <div class="col my-2">
+        <img src="assets/icons/parking32.png" alt="" />
+        <span>Parking Go spots</span>
+      </div>
+    </div>
+  </div>
+
+  <div
+    id="customer-spot-details"
+    style="
+      background-color: white;
+      box-shadow: 0px 0px 5px black;
+      border-radius: 5px;
+
+      padding: 20px;
+    "
+    class="col col-lg-3 pt-4"
+  >
+    <div *ngIf="!selectedSpotData" style="color: gray; padding-top: 50%">
+      <div style="text-align: center; font-size: xx-large">
+        No Spots Selected
+      </div>
+      <div style="text-align: center">
+        <i
+          >Find your destination on the map, and select one of the Parking Go
+          registered spots nearby</i
+        >
+      </div>
+    </div>
+    <div *ngIf="selectedSpotData">
+      <div style="border-bottom: 3px solid gold; padding-bottom: 10px">
+        <div style="font-size: 2em; font-weight: bold">
+          Parking Go Spot #{{ selectedSpotData.id }}
+        </div>
+        <div style="margin-top: 10px">
+          {{ selectedSpotData.distanceFromDest | number: ".0-0" }} m from
+          destination
+          <i *ngIf="selectedSpotData.nearest">(nearest to destination)</i>
+        </div>
+      </div>
+      <div>
+        <div>
+          <i class="fas fa-map-marked-alt"></i
+          ><span style="font-size: 1.5em; font-weight: bold; margin-left: 10px"
+            >Address</span
+          >
+        </div>
+        <div style="font-size: 1.1em">{{ selectedSpotData.address }}</div>
+      </div>
+
+      <div style="margin-top: 20px">
+        <div style="font-size: 1.5em; font-weight: bold; margin-bottom: 10px">
+          Spot Handler
+        </div>
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            border: 1px solid rgba(0, 0, 0, 0.226);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 3px black;
+          "
+        >
+          <img
+            src="assets/images/handler.png"
+            alt=""
+            style="width: 40%; height: auto; margin-right: 20px"
+          />
+          <div>
+            <div style="font-size: 1.1em; margin-bottom: 5px">
+              <i class="fas fa-user"></i>{{ selectedSpotData.handler }}
+            </div>
+            <div style="font-size: 1.1em">
+              <i class="fas fa-phone-alt"></i
+              >{{ selectedSpotData.handlerphone }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size: 1.5em">
+        <span style="font-size: 2em">{{ selectedSpotData.num }}</span> empty
+        slots
+      </div>
+
+      <div style="font-size: 1.5em">
+        <span style="font-size: 2em"
+          >&#x20b9;{{ selectedSpotData.cost }}/hr</span
+        >
+        per slot
+      </div>
+
+      <button class="btn btn-lg btn-success" (click)="confirmBookingDialog()">
+        Book Now
+      </button>
+    </div>
+  </div>
+</div>

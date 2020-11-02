@@ -1,1 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+@import "../node_modules/bootstrap/dist/css/bootstrap.css";
+@import "../node_modules/@fortawesome/fontawesome-free/css/all.css";
+html,body{
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+html, body { height: 100%; }
+body { margin: 0;  }
+
+.transparent-dialog .mat-dialog-container
+{
+     background-color:rgb(44,62,80);
+     
+     
+     margin: auto;
+}
+
+.confirmDialog .mat-dialog-container
+{
+    max-height: calc(100vh);
+}
