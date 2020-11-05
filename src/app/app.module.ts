@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SearchmapComponent } from './searchmap/searchmap.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppData } from './app.details';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,6 +15,14 @@ import { BookingFailedDialogComponent } from './booking-failed-dialog/booking-fa
 import { LottieModule } from 'ngx-lottie';
 import player from 'lottie-web';
 import { BookingDetailsFormComponent } from './booking-details-form/booking-details-form.component';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+
+import { MatNativeDateModule } from '@angular/material/core';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+
  
 
 export function playerFactory() {
@@ -36,10 +44,21 @@ export function playerFactory() {
   BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
     MatDialogModule,
-    LottieModule.forRoot({ player: playerFactory })
+    LottieModule.forRoot({ player: playerFactory }),
+    MatFormFieldModule,
+    MatInputModule,
+    MatRadioModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    OwlDateTimeModule, 
+    OwlNativeDateTimeModule,
+    
+    
+    
     
   ],
   providers: [AppData],

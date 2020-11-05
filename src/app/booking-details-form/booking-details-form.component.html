@@ -1,1 +1,102 @@
-<p>booking-details-form works!</p>
+<div class="w-100 row m-0 d-flex justify-content-center py-5 px-4" style="background-image: url('assets/images/5965946.jpg'); background-position: center;background-repeat: no-repeat;background-size: cover;min-height: calc(100vh);">
+  <div class="col col-12 col-lg-5 bg-white p-5 pt-0" style="border-radius: 20px;box-shadow: 0px 0px 10px black;">
+    <div class="h2 p-3 mt-2 ">
+      Enter your Booking Details
+    </div>
+    <form class="w-100 p-5 pt-0" [formGroup]="form" style="box-shadow: 0px 0px 5px gold; border-radius: 5px;">
+      <div style="margin-bottom: 20px;font-size: 1.2rem;">
+        <div style="font-size: 1.5rem;font-weight: bold; margin-bottom: 10px;"><span >Vehicle Type</span> </div>
+      <div class="form-check form-check-inline">
+        <input
+          formControlName="vehicleType"
+          class="form-check-input"
+          type="radio"
+          name="vehicleType"
+          id="two-wheeler"
+          value="2"
+        />
+        <label class="form-check-label" for="two-wheeler">Two wheeler</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input
+          formControlName="vehicleType"
+          class="form-check-input"
+          type="radio"
+          name="vehicleType"
+          id="four-wheeler"
+          value="1"
+        />
+        <label class="form-check-label" for="four-wheeler">Four wheeler</label>
+      </div>
+      </div>
+      
+      <div class="form-group" style="margin-bottom: 20px;font-size: 1.2rem;">
+        <label for="cust-input-vehicleNum" style="font-size: 1.5rem;font-weight: bold; margin-bottom: 10px;">Vehicle Number</label>
+        <input
+          formControlName="vehicleNumber"
+          type="text"
+          class="form-control"
+          id="cust-input-vehicleNum"
+          placeholder="Eg. AB01C2345"
+        />
+      </div>
+
+      <div class="form-group" style="margin-bottom: 20px;font-size: 1.2rem;">
+        <label for="cust-input-vehicleModel" style="font-size: 1.5rem;font-weight: bold; margin-bottom: 10px;">Vehicle Model</label>
+        <input
+          formControlName="vehicleModel"
+          type="text"
+          class="form-control"
+          id="cust-input-vehicleModel"
+          placeholder="Eg. TATA Nano"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="cust-input-vehicleModel" style="font-size: 1.5rem;font-weight: bold; margin-bottom: 10px;">From</label>
+        <div class="input-group mb-3">
+          <input
+            formControlName="timeslot"
+            type="text"
+            class="form-control"
+            placeholder="Select Check in Date and Time"
+            readonly
+            [owlDateTime]="fromDatePicker"
+            [owlDateTimeTrigger]="fromDatePicker"
+            [min]="timeNow"
+            [selectMode]="'rangeFrom'"
+            [(ngModel)]="selectedMoments"
+          />
+          <div class="input-group-append">
+            <owl-date-time #fromDatePicker [hour12Timer]="true"></owl-date-time>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="cust-input-vehicleModel" style="font-size: 1.5rem;font-weight: bold; margin-bottom: 10px;">To</label>
+        <div class="input-group mb-3">
+          <input
+            formControlName="timeslot"
+            type="text"
+            class="form-control"
+            placeholder="Select Check out Date and Time"
+            readonly
+            [owlDateTime]="toDatePicker"
+            [owlDateTimeTrigger]="toDatePicker"
+            [selectMode]="'rangeTo'"
+            [(ngModel)]="selectedMoments"
+          />
+          <div class="input-group-append">
+            <owl-date-time #toDatePicker [hour12Timer]="true"></owl-date-time>
+          </div>
+        </div>
+      </div>
+
+      <div><button class="btn btn-primary btn-lg w-100 mb-3" [disabled]="form.invalid" (click)="setBookingDetails()">Select a Spot from Map</button>
+        <button class="btn btn-danger w-100" (click)="clearAll()">Reset</button></div>
+
+      
+    </form>
+  </div>
+</div>

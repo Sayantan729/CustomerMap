@@ -8,8 +8,10 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import {} from 'googlemaps';
 import { ConfirmBookingDialogComponent } from '../confirm-booking-dialog/confirm-booking-dialog.component';
+import { BookingService } from '../services/booking.service';
 import { DatabaseService } from '../services/database.service';
 import { SearchServiceService } from '../services/search-service.service';
 import { SpotsUpdateService } from '../services/spots-update.service';
@@ -33,11 +35,13 @@ export class SearchmapComponent implements OnInit, OnDestroy {
   spots: any[];
   selectedSpotData: any;
 
-  vehicleType: string = '1';
-  fromtime: string = '2020-10-24 10:44:03';
-  totime: string = '2020-10-25 10:44:03';
-  carNumber:string="WB02S8998";
-  carModel:string="Tata Nano";
+  bookingDetails:any;
+
+  vehicleType: string  ;
+  fromtime: string ;
+  totime: string ;
+  carNumber:string ;
+  carModel:string ;
   owner:string="12200116031s@gmail.com";
 
 
@@ -49,8 +53,33 @@ export class SearchmapComponent implements OnInit, OnDestroy {
     private databaseService: DatabaseService,
     private renderer: Renderer2,
     private dialog: MatDialog,
-    private spotsUpdate: SpotsUpdateService
-  ) {}
+    private spotsUpdate: SpotsUpdateService,
+    private bookingService:BookingService,
+    private router:Router
+  ) {
+    this.bookingService.bookingDetails.subscribe((data)=>{
+
+      if(data)
+      {
+        this.bookingDetails=JSON.parse(JSON.stringify(data));
+        this.vehicleType=this.bookingDetails.vehicleType;
+        this.carNumber=this.bookingDetails.vehicleNumber;
+        this.carModel=this.bookingDetails.vehicleModel;
+        let fromDate=new Date(this.bookingDetails.timeslot[0]);
+        let toDate=new Date(this.bookingDetails.timeslot[1]);
+        this.fromtime=`${fromDate.getFullYear()}-${this.fillDigit(fromDate.getMonth()+1)}-${this.fillDigit(fromDate.getDate())} ${this.fillDigit(fromDate.getHours())}:${this.fillDigit(fromDate.getMinutes())}:${this.fillDigit(fromDate.getSeconds())}`;
+
+        this.totime=`${toDate.getFullYear()}-${this.fillDigit(toDate.getMonth()+1)}-${this.fillDigit(toDate.getDate())} ${this.fillDigit(toDate.getHours())}:${this.fillDigit(toDate.getMinutes())}:${this.fillDigit(toDate.getSeconds())}`;
+      }
+
+      else
+      {
+        this.router.navigate(['']);
+
+      }
+
+    });
+  }
 
   ngOnInit(): void {
     // this.selectedSpotData={address: "136B Rash Behari Avenue, Kolkata, West Bengal, 700029",
@@ -63,6 +92,12 @@ export class SearchmapComponent implements OnInit, OnDestroy {
     // lon: "88.352776989341",
     // num: 6,
     // timeslot: "1"};
+
+    
+
+
+
+
     this.renderer.listen('window', 'click', (e: Event) => {
       if (e.target !== this.searchBar.nativeElement) this.searching = false;
       else this.searching = true;
@@ -297,5 +332,12 @@ export class SearchmapComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.spotsUpdate.stopUpdate();
+  }
+
+  fillDigit(num:number)
+  {
+    if(num<10)
+    return "0"+num;
+    return ""+num;
   }
 }

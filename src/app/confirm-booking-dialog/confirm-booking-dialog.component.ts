@@ -1,8 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { logging } from 'protractor';
 import { BookingFailedDialogComponent } from '../booking-failed-dialog/booking-failed-dialog.component';
 import { BookingSuccessDialogComponent } from '../booking-success-dialog/booking-success-dialog.component';
+import { BookingService } from '../services/booking.service';
 import { DatabaseService } from '../services/database.service';
 
 @Component({
@@ -16,7 +18,7 @@ export class ConfirmBookingDialogComponent implements OnInit {
   booking;
   constructor(
     public dialogRef: MatDialogRef<ConfirmBookingDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: any,private database:DatabaseService,private dialog:MatDialog) {}
+    @Inject(MAT_DIALOG_DATA) private data: any,private database:DatabaseService,private dialog:MatDialog,private bookingService:BookingService,private router:Router) {}
 
   ngOnInit(): void {
     this._data=this.data;
@@ -61,6 +63,9 @@ export class ConfirmBookingDialogComponent implements OnInit {
             panelClass:'transparent-dialog'
           });
           dialogRefSuccess.afterClosed().subscribe(()=>{
+            this.bookingService.clearBookingData();
+            //this.router.navigate(['']);
+
             this.dialogRef.close();
 
           })
