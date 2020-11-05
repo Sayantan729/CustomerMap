@@ -68,7 +68,7 @@
             [(ngModel)]="selectedMoments"
           />
           <div class="input-group-append">
-            <owl-date-time #fromDatePicker [hour12Timer]="true"></owl-date-time>
+            <owl-date-time #fromDatePicker [hour12Timer]="true" [pickerMode]="'dialog'"></owl-date-time>
           </div>
         </div>
       </div>
@@ -88,7 +88,7 @@
             [(ngModel)]="selectedMoments"
           />
           <div class="input-group-append">
-            <owl-date-time #toDatePicker [hour12Timer]="true"></owl-date-time>
+            <owl-date-time #toDatePicker [hour12Timer]="true" [pickerMode]="'dialog'"></owl-date-time>
           </div>
         </div>
       </div>
