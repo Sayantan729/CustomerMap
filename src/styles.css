@@ -12,7 +12,8 @@ body { margin: 0;  }
 
 .transparent-dialog .mat-dialog-container
 {
-     background-color:rgb(44,62,80);
+     background-color:#f8e9a1;
+     color: black;
      
      
      margin: auto;
@@ -27,6 +28,25 @@ body { margin: 0;  }
 
 /***************************************************/
 /*Date Picker Styles*/
+
+.date-picker-panel ::-webkit-scrollbar {
+    width: 5px;
+  }
+  .date-picker-panel ::-webkit-scrollbar-track {
+     
+    border-radius: 10px;
+  }
+   
+  /* Handle */
+  .date-picker-panel ::-webkit-scrollbar-thumb {
+    background: #f8e9a1; 
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  .date-picker-panel ::-webkit-scrollbar-thumb:hover {
+    background:gold; 
+  }
 
 .owl-dt-calendar-table .owl-dt-calendar-cell-selected.owl-dt-calendar-cell-today {
     box-shadow: inset 0 0 0 1px gold;

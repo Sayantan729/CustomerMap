@@ -35,15 +35,14 @@ export class SearchmapComponent implements OnInit, OnDestroy {
   spots: any[];
   selectedSpotData: any;
 
-  bookingDetails:any;
+  bookingDetails: any;
 
-  vehicleType: string  ;
-  fromtime: string ;
-  totime: string ;
-  carNumber:string ;
-  carModel:string ;
-  owner:string="12200116031s@gmail.com";
-
+  vehicleType: string;
+  fromtime: string;
+  totime: string;
+  carNumber: string;
+  carModel: string;
+  owner: string = '12200116031s@gmail.com';
 
   oldData: string;
   newData: string;
@@ -54,30 +53,39 @@ export class SearchmapComponent implements OnInit, OnDestroy {
     private renderer: Renderer2,
     private dialog: MatDialog,
     private spotsUpdate: SpotsUpdateService,
-    private bookingService:BookingService,
-    private router:Router
+    private bookingService: BookingService,
+    private router: Router
   ) {
-    this.bookingService.bookingDetails.subscribe((data)=>{
+    this.bookingService.bookingDetails.subscribe((data) => {
+      if (data) {
+        this.bookingDetails = JSON.parse(JSON.stringify(data));
+        if (this.bookingDetails.vehicleType == '4-wheeler')
+          this.vehicleType = '1';
+        if (this.bookingDetails.vehicleType == '2-wheeler')
+          this.vehicleType = '2';
 
-      if(data)
-      {
-        this.bookingDetails=JSON.parse(JSON.stringify(data));
-        this.vehicleType=this.bookingDetails.vehicleType;
-        this.carNumber=this.bookingDetails.vehicleNumber;
-        this.carModel=this.bookingDetails.vehicleModel;
-        let fromDate=new Date(this.bookingDetails.timeslot[0]);
-        let toDate=new Date(this.bookingDetails.timeslot[1]);
-        this.fromtime=`${fromDate.getFullYear()}-${this.fillDigit(fromDate.getMonth()+1)}-${this.fillDigit(fromDate.getDate())} ${this.fillDigit(fromDate.getHours())}:${this.fillDigit(fromDate.getMinutes())}:${this.fillDigit(fromDate.getSeconds())}`;
+        this.carNumber = this.bookingDetails.vehicleNumber;
+        this.carModel = this.bookingDetails.vehicleModel;
+        let fromDate = new Date(this.bookingDetails.timeslot[0]);
+        let toDate = new Date(this.bookingDetails.timeslot[1]);
+        this.fromtime = `${fromDate.getFullYear()}-${this.fillDigit(
+          fromDate.getMonth() + 1
+        )}-${this.fillDigit(fromDate.getDate())} ${this.fillDigit(
+          fromDate.getHours()
+        )}:${this.fillDigit(fromDate.getMinutes())}:${this.fillDigit(
+          fromDate.getSeconds()
+        )}`;
 
-        this.totime=`${toDate.getFullYear()}-${this.fillDigit(toDate.getMonth()+1)}-${this.fillDigit(toDate.getDate())} ${this.fillDigit(toDate.getHours())}:${this.fillDigit(toDate.getMinutes())}:${this.fillDigit(toDate.getSeconds())}`;
-      }
-
-      else
-      {
+        this.totime = `${toDate.getFullYear()}-${this.fillDigit(
+          toDate.getMonth() + 1
+        )}-${this.fillDigit(toDate.getDate())} ${this.fillDigit(
+          toDate.getHours()
+        )}:${this.fillDigit(toDate.getMinutes())}:${this.fillDigit(
+          toDate.getSeconds()
+        )}`;
+      } else {
         this.router.navigate(['']);
-
       }
-
     });
   }
 
@@ -92,11 +100,6 @@ export class SearchmapComponent implements OnInit, OnDestroy {
     // lon: "88.352776989341",
     // num: 6,
     // timeslot: "1"};
-
-    
-
-
-
 
     this.renderer.listen('window', 'click', (e: Event) => {
       if (e.target !== this.searchBar.nativeElement) this.searching = false;
@@ -303,20 +306,19 @@ export class SearchmapComponent implements OnInit, OnDestroy {
   }
 
   confirmBookingDialog() {
-    let obj=JSON.parse(JSON.stringify(this.selectedSpotData));
-    obj["carnumber"]=this.carNumber;
-    obj["carmodel"]=this.carModel;
-    obj["type"]=this.vehicleType;
-    obj["owner"]=this.owner;
-    obj["from"]=this.fromtime;
-    obj["to"]=this.totime;
-    obj["dlat"]=this.destinationMarker.getPosition().lat();
-    obj["dlon"]=this.destinationMarker.getPosition().lng();
+    let obj = JSON.parse(JSON.stringify(this.selectedSpotData));
+    obj['carnumber'] = this.carNumber;
+    obj['carmodel'] = this.carModel;
+    obj['type'] = this.vehicleType;
+    obj['owner'] = this.owner;
+    obj['from'] = this.fromtime;
+    obj['to'] = this.totime;
+    obj['dlat'] = this.destinationMarker.getPosition().lat();
+    obj['dlon'] = this.destinationMarker.getPosition().lng();
 
     const dialogRef = this.dialog.open(ConfirmBookingDialogComponent, {
-      
       data: JSON.parse(JSON.stringify(obj)),
-      panelClass:"confirmDialog"
+      panelClass: 'confirmDialog',
     });
   }
 
@@ -334,10 +336,8 @@ export class SearchmapComponent implements OnInit, OnDestroy {
     this.spotsUpdate.stopUpdate();
   }
 
-  fillDigit(num:number)
-  {
-    if(num<10)
-    return "0"+num;
-    return ""+num;
+  fillDigit(num: number) {
+    if (num < 10) return '0' + num;
+    return '' + num;
   }
 }

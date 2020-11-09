@@ -1,0 +1,23 @@
+ ::-webkit-scrollbar {
+    width: 5px;
+  }
+   ::-webkit-scrollbar-track {
+     
+    border-radius: 10px;
+  }
+   
+  /* Handle */
+   ::-webkit-scrollbar-thumb {
+    background: #f8e9a1; 
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+   ::-webkit-scrollbar-thumb:hover {
+    background:gold; 
+  }
+  .form-car-row:hover
+  {
+      background-color: #f8e9a1 ;
+
+  }

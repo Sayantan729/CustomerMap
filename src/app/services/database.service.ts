@@ -20,4 +20,9 @@ export class DatabaseService {
     return this.dataService.postData(`${this.appData.appData.databaseApi}insertbooking.php`,bookingData);
 
   }
+
+  getCarDetails(userData)
+  {
+    return this.dataService.postData(`${this.appData.appData.databaseApi}getCarsList.php`,userData);
+  }
 }
