@@ -1,5 +1,5 @@
 <div
-  class="w-100 row m-0 d-flex justify-content-center py-5 px-4"
+  class="w-100 m-0"
   style="
     background-image: url('assets/images/5965946.jpg');
     background-position: center;
@@ -8,278 +8,300 @@
     min-height: calc(100vh);
   "
 >
+<div class="w-100 row m-0 d-flex justify-content-center py-5 px-4"
+style="background-color: rgba(0, 0, 0, 0.596);
+min-height: calc(100vh);"
+>
   <div
-    class="col col-12 col-lg-5 bg-white p-5 pt-0"
-    style="border-radius: 20px; box-shadow: 0px 0px 10px black"
+  class="col col-12 col-lg-5 bg-white p-5 pt-5"
+  style="border-radius: 20px; box-shadow: 0px 0px 10px black;margin-top: 5%;"
+>
+  <div class="h2 p-3 mt-2">Enter your Booking Details</div>
+  <form
+    class="w-100 p-5 pt-0"
+    [formGroup]="form"
+    style="box-shadow: 0px 0px 5px gold; border-radius: 5px"
   >
-    <div class="h2 p-3 mt-2">Enter your Booking Details</div>
-    <form
-      class="w-100 p-5 pt-0"
-      [formGroup]="form"
-      style="box-shadow: 0px 0px 5px gold; border-radius: 5px"
+    <!-- Radio -->
+    <div style="font-size: 1.7rem; font-weight: bold; margin-bottom: 10px">
+      Vehicle Details
+    </div>
+    <div
+      class="custom-control custom-radio"
+      (click)="unsetVehicleEntry()"
+      style="font-size: 1.2em"
     >
-      <!-- Radio -->
-      <div style="font-size: 1.7rem; font-weight: bold; margin-bottom: 10px">
-        Vehicle Details
-      </div>
-      <div
-        class="custom-control custom-radio"
-        (click)="unsetVehicleEntry()"
-        style="font-size: 1.2em"
+      <input
+        type="radio"
+        id="selectFromList"
+        name="vehicleSelectType"
+        class="custom-control-input"
+        [checked]="!enterVehicleDetails"
+        
+        
+      />
+      <label class="custom-control-label" for="selectFromList"
+        >Select previously used vehicle</label
       >
+    </div>
+    <div
+      *ngIf="!enterVehicleDetails && !selectedVehicle"
+      style="
+        margin-top: 2em;
+        max-height: 15em;
+        overflow: auto;
+        margin-top: 1em;
+      "
+    >
+      <div
+        *ngFor="let car of cars;let i=index"
+        class="row py-3 form-car-row"
+        style="
+          font-size: 1.1em;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.342);
+          transition: all ease 0.5s;
+        "
+        (click)="vehicleSelected(i)"
+      >
+        <div class="col col-3">
+          <i
+            class="fas fa-car-side"
+            *ngIf="car.vehicleType == '4-wheeler'"
+          ></i
+          ><i
+            class="fas fa-motorcycle"
+            *ngIf="car.vehicleType == '2-wheeler'"
+          ></i>
+        </div>
+        <div class="col row row-cols-1 row-cols-md-2">
+          <div class="col"><span class="badge badge-pill badge-dark">{{ car.vehicleNum }}</span></div>
+          <div class="col" style="font-size: larger;font-weight: 500;">{{ car.vehicleModel }}</div>
+          </div>
+        
+      </div>
+    </div>
+
+    <div *ngIf="!enterVehicleDetails && selectedVehicle">
+
+      <div class="form-group" style="margin-bottom: 20px; font-size: 1.2rem">
+        <label
+          for="cust-disp-vehicleType"
+          style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px"
+          >Vehicle Type</label
+        >
         <input
-          type="radio"
-          id="selectFromList"
-          name="vehicleSelectType"
-          class="custom-control-input"
-          [checked]="!enterVehicleDetails"
-          
+          formControlName="vehicleType"
+          type="text"
+          class="form-control-plaintext"
+          id="cust-disp-vehicleType"
+          readonly
           
         />
-        <label class="custom-control-label" for="selectFromList"
-          >Select previously used vehicle</label
-        >
       </div>
-      <div
-        *ngIf="!enterVehicleDetails && !selectedVehicle"
-        style="
-          margin-top: 2em;
-          max-height: 15em;
-          overflow: auto;
-          margin-top: 1em;
-        "
+
+
+      <div class="form-group" style="margin-bottom: 20px; font-size: 1.2rem">
+        <label
+          for="cust-disp-vehicleNum"
+          style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px"
+          >Vehicle Number</label
+        >
+        <input
+          formControlName="vehicleNumber"
+          type="text"
+          class="form-control-plaintext"
+          id="cust-disp-vehicleNum"
+          readonly
+          
+        />
+      </div>
+
+      <div class="form-group" style="margin-bottom: 20px; font-size: 1.2rem">
+        <label
+          for="cust-disp-vehicleModel"
+          style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px"
+          >Vehicle Model</label
+        >
+        <input
+          formControlName="vehicleModel"
+          type="text"
+          class="form-control-plaintext"
+          id="cust-disp-vehicleModel"
+          placeholder="Eg. TATA Nano"
+          readonly
+        />
+      </div>
+      <button type="button" class="btn btn-secondary" (click)="changeVehicle()">Change</button>
+    </div>
+
+    <div style="font-size: large; font-weight: bold; text-align: center">
+      OR
+    </div>
+    <div
+      class="custom-control custom-radio"
+      (click)="setVehicleEntry()"
+      style="font-size: 1.2em"
+    >
+      <input
+        type="radio"
+        id="enterNew"
+        name="vehicleSelectType"
+        class="custom-control-input"
+        [checked]="enterVehicleDetails"
+        
+      />
+      <label class="custom-control-label" for="enterNew"
+        >Enter new vehicle details</label
       >
+    </div>
+
+    <div *ngIf="enterVehicleDetails">
+      <div style="margin-bottom: 20px; font-size: 1.2rem">
         <div
-          *ngFor="let car of cars;let i=index"
-          class="row py-3 form-car-row"
-          style="
-            font-size: 1.1em;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.342);
-            transition: all ease 0.5s;
-          "
-          (click)="vehicleSelected(i)"
+          style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px"
         >
-          <div class="col col-1">
-            <i
-              class="fas fa-car-side"
-              *ngIf="car.vehicleType == '4-wheeler'"
-            ></i
-            ><i
-              class="fas fa-motorcycle"
-              *ngIf="car.vehicleType == '2-wheeler'"
-            ></i>
-          </div>
-          <div class="col col-4"><span class="badge badge-pill badge-dark">{{ car.vehicleNum }}</span></div>
-          <div class="col" style="font-size: larger;font-weight: 500;">{{ car.vehicleModel }}</div>
+          <span>Vehicle Type</span>
         </div>
-      </div>
-
-      <div *ngIf="!enterVehicleDetails && selectedVehicle">
-
-        <div class="form-group" style="margin-bottom: 20px; font-size: 1.2rem">
-          <label
-            for="cust-disp-vehicleType"
-            style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px"
-            >Vehicle Type</label
-          >
+        <div class="custom-control custom-radio custom-control-inline">
           <input
             formControlName="vehicleType"
-            type="text"
-            class="form-control-plaintext"
-            id="cust-disp-vehicleType"
-            readonly
-            
+            class="custom-control-input"
+            type="radio"
+            name="vehicleType"
+            id="two-wheeler"
+            value="2"
           />
-        </div>
-
-
-        <div class="form-group" style="margin-bottom: 20px; font-size: 1.2rem">
-          <label
-            for="cust-disp-vehicleNum"
-            style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px"
-            >Vehicle Number</label
+          <label class="custom-control-label" for="two-wheeler"
+            >Two wheeler</label
           >
-          <input
-            formControlName="vehicleNumber"
-            type="text"
-            class="form-control-plaintext"
-            id="cust-disp-vehicleNum"
-            readonly
-            
-          />
         </div>
-
-        <div class="form-group" style="margin-bottom: 20px; font-size: 1.2rem">
-          <label
-            for="cust-disp-vehicleModel"
-            style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px"
-            >Vehicle Model</label
+        <div class="custom-control custom-radio custom-control-inline">
+          <input
+            formControlName="vehicleType"
+            class="custom-control-input"
+            type="radio"
+            name="vehicleType"
+            id="four-wheeler"
+            value="1"
+          />
+          <label class="custom-control-label" for="four-wheeler"
+            >Four wheeler</label
           >
-          <input
-            formControlName="vehicleModel"
-            type="text"
-            class="form-control-plaintext"
-            id="cust-disp-vehicleModel"
-            placeholder="Eg. TATA Nano"
-            readonly
-          />
         </div>
-        <button type="button" class="btn btn-secondary" (click)="changeVehicle()">Change</button>
       </div>
 
-      <div style="font-size: large; font-weight: bold; text-align: center">
-        OR
-      </div>
-      <div
-        class="custom-control custom-radio"
-        (click)="setVehicleEntry()"
-        style="font-size: 1.2em"
-      >
+      <div class="form-group" style="margin-bottom: 20px; font-size: 1.2rem">
+        <label
+          for="cust-input-vehicleNum"
+          style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px"
+          >Vehicle Number</label
+        >
         <input
-          type="radio"
-          id="enterNew"
-          name="vehicleSelectType"
-          class="custom-control-input"
-          [checked]="enterVehicleDetails"
-          
+          formControlName="vehicleNumber"
+          type="text"
+          class="form-control"
+          id="cust-input-vehicleNum"
+          placeholder="Eg. AB01C2345"
+          [class.is-invalid]="vehicleNumber.touched && vehicleNumber.errors"
         />
-        <label class="custom-control-label" for="enterNew"
-          >Enter new vehicle details</label
-        >
+        <div>
+          <small (click)="openVehicleNumberRules()" style="cursor: pointer;color: gray;font-style: italic;"><i class="fas fa-info-circle" style="color: black;margin-right: 5px;"></i>Click to know about the acceptable vehicle number format</small>
+        </div>
+        <div *ngIf="vehicleNumber.touched && vehicleNumber.errors">
+          <small *ngIf=" vehicleNumber.errors.required" class="form-error">Cannot be empty.</small>
+          <small *ngIf=" !vehicleNumber.errors.required && vehicleNumber.errors.formatNotProper" class="form-error">The vehicle number format is not proper. Please check the acceptable vehicle number format.</small>
+        </div>
       </div>
 
-      <div *ngIf="enterVehicleDetails">
-        <div style="margin-bottom: 20px; font-size: 1.2rem">
-          <div
-            style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px"
-          >
-            <span>Vehicle Type</span>
-          </div>
-          <div class="custom-control custom-radio custom-control-inline">
-            <input
-              formControlName="vehicleType"
-              class="custom-control-input"
-              type="radio"
-              name="vehicleType"
-              id="two-wheeler"
-              value="2"
-            />
-            <label class="custom-control-label" for="two-wheeler"
-              >Two wheeler</label
-            >
-          </div>
-          <div class="custom-control custom-radio custom-control-inline">
-            <input
-              formControlName="vehicleType"
-              class="custom-control-input"
-              type="radio"
-              name="vehicleType"
-              id="four-wheeler"
-              value="1"
-            />
-            <label class="custom-control-label" for="four-wheeler"
-              >Four wheeler</label
-            >
-          </div>
-        </div>
-
-        <div class="form-group" style="margin-bottom: 20px; font-size: 1.2rem">
-          <label
-            for="cust-input-vehicleNum"
-            style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px"
-            >Vehicle Number</label
-          >
-          <input
-            formControlName="vehicleNumber"
-            type="text"
-            class="form-control"
-            id="cust-input-vehicleNum"
-            placeholder="Eg. AB01C2345"
-          />
+      <div class="form-group" style="margin-bottom: 20px; font-size: 1.2rem">
+        <label
+          for="cust-input-vehicleModel"
+          style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px"
+          >Vehicle Model</label
+        >
+        <input
+          formControlName="vehicleModel"
+          type="text"
+          class="form-control"
+          id="cust-input-vehicleModel"
+          placeholder="Eg. TATA Nano"
+          [class.is-invalid]="vehicleModel.touched && vehicleModel.errors"
+        />
+        <div *ngIf="vehicleModel.touched && vehicleModel.errors">
+          <small *ngIf=" vehicleModel.errors.required" class="form-error">Cannot be empty.</small>
           
         </div>
+      </div>
+    </div>
 
-        <div class="form-group" style="margin-bottom: 20px; font-size: 1.2rem">
-          <label
-            for="cust-input-vehicleModel"
-            style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px"
-            >Vehicle Model</label
-          >
-          <input
-            formControlName="vehicleModel"
-            type="text"
-            class="form-control"
-            id="cust-input-vehicleModel"
-            placeholder="Eg. TATA Nano"
-          />
+    <div class="form-group">
+      <label style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px"
+        >From</label
+      >
+      <div class="input-group mb-3">
+        <input
+          formControlName="timeslot"
+          type="text"
+          class="form-control"
+          placeholder="Select Check in Date and Time"
+          readonly
+          [owlDateTime]="fromDatePicker"
+          [owlDateTimeTrigger]="fromDatePicker"
+          [min]="timeNow"
+          [selectMode]="'rangeFrom'"
+          [(ngModel)]="selectedMoments"
+        />
+        <div class="input-group-append">
+          <owl-date-time
+            #fromDatePicker
+            [hour12Timer]="true"
+            [pickerMode]="'dialog'"
+            [panelClass]="'date-picker-panel'"
+          ></owl-date-time>
         </div>
       </div>
+    </div>
 
-      <div class="form-group">
-        <label style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px"
-          >From</label
-        >
-        <div class="input-group mb-3">
-          <input
-            formControlName="timeslot"
-            type="text"
-            class="form-control"
-            placeholder="Select Check in Date and Time"
-            readonly
-            [owlDateTime]="fromDatePicker"
-            [owlDateTimeTrigger]="fromDatePicker"
-            [min]="timeNow"
-            [selectMode]="'rangeFrom'"
-            [(ngModel)]="selectedMoments"
-          />
-          <div class="input-group-append">
-            <owl-date-time
-              #fromDatePicker
-              [hour12Timer]="true"
-              [pickerMode]="'dialog'"
-              [panelClass]="'date-picker-panel'"
-            ></owl-date-time>
-          </div>
+    <div class="form-group">
+      <label style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px"
+        >To</label
+      >
+      <div class="input-group mb-3">
+        <input
+          formControlName="timeslot"
+          type="text"
+          class="form-control"
+          placeholder="Select Check out Date and Time"
+          readonly
+          [owlDateTime]="toDatePicker"
+          [owlDateTimeTrigger]="toDatePicker"
+          [selectMode]="'rangeTo'"
+          [(ngModel)]="selectedMoments"
+        />
+        <div class="input-group-append">
+          <owl-date-time
+            #toDatePicker
+            [hour12Timer]="true"
+            [pickerMode]="'dialog'"
+            [panelClass]="'date-picker-panel'"
+          ></owl-date-time>
         </div>
       </div>
+    </div>
 
-      <div class="form-group">
-        <label style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px"
-          >To</label
-        >
-        <div class="input-group mb-3">
-          <input
-            formControlName="timeslot"
-            type="text"
-            class="form-control"
-            placeholder="Select Check out Date and Time"
-            readonly
-            [owlDateTime]="toDatePicker"
-            [owlDateTimeTrigger]="toDatePicker"
-            [selectMode]="'rangeTo'"
-            [(ngModel)]="selectedMoments"
-          />
-          <div class="input-group-append">
-            <owl-date-time
-              #toDatePicker
-              [hour12Timer]="true"
-              [pickerMode]="'dialog'"
-              [panelClass]="'date-picker-panel'"
-            ></owl-date-time>
-          </div>
-        </div>
-      </div>
+    <div>
+      <button
+        class="btn btn-primary btn-lg w-100 mb-3"
+        [disabled]="form.invalid || (!enterVehicleDetails && !selectedVehicle)"
+        (click)="setBookingDetails()"
+      >
+        Select a Spot from Map
+      </button>
+      <button class="btn btn-danger w-100" (click)="clearAll()">Reset</button>
+    </div>
+  </form>
+</div>
 
-      <div>
-        <button
-          class="btn btn-primary btn-lg w-100 mb-3"
-          [disabled]="form.invalid || (!enterVehicleDetails && !selectedVehicle)"
-          (click)="setBookingDetails()"
-        >
-          Select a Spot from Map
-        </button>
-        <button class="btn btn-danger w-100" (click)="clearAll()">Reset</button>
-      </div>
-    </form>
-  </div>
+</div>
+
 </div>

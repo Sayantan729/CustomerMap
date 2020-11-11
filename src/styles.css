@@ -24,7 +24,30 @@ body { margin: 0;  }
     max-height: calc(100vh);
 }
 
+.vehicle-num-dialog .mat-dialog-container
+{
+    max-height: calc(100vh);
+    
+}
 
+.vehicle-num-dialog ::-webkit-scrollbar {
+    width: 5px;
+  }
+  .vehicle-num-dialog ::-webkit-scrollbar-track {
+     
+    border-radius: 10px;
+  }
+   
+  /* Handle */
+  .vehicle-num-dialog ::-webkit-scrollbar-thumb {
+    background: #f8e9a1; 
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  .vehicle-num-dialog ::-webkit-scrollbar-thumb:hover {
+    background:gold; 
+  }
 
 /***************************************************/
 /*Date Picker Styles*/

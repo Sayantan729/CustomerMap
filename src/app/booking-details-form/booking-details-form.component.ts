@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { BookingService } from '../services/booking.service';
 import { DatabaseService } from '../services/database.service';
 import { CommonValidators } from '../validators/common.validators';
 import { DateValidators } from '../validators/date.validators';
 import { VehicleNumValidators } from '../validators/vehicle-number.validators';
+import { VehicleNumberDialogComponent } from '../vehicle-number-dialog/vehicle-number-dialog.component';
 
 @Component({
   selector: 'app-booking-details-form',
@@ -28,7 +30,8 @@ export class BookingDetailsFormComponent implements OnInit {
   constructor(
     private bookingService: BookingService,
     private router: Router,
-    private database: DatabaseService
+    private database: DatabaseService,
+    private dialog:MatDialog
   ) {
     this.form = new FormGroup({
       timeslot: new FormControl('', DateValidators.fieldRequired),
@@ -128,5 +131,21 @@ export class BookingDetailsFormComponent implements OnInit {
     this.form.removeControl('vehicleNumber');
     this.form.removeControl('vehicleType');
     this.form.removeControl('vehicleModel');
+  }
+
+  get vehicleNumber()
+  {
+    return this.form.get("vehicleNumber");
+  }
+
+  get vehicleModel()
+  {
+    return this.form.get("vehicleModel");
+  }
+
+  openVehicleNumberRules()
+  {
+    this.dialog.open(VehicleNumberDialogComponent,{panelClass:"vehicle-num-dialog"});
+    
   }
 }

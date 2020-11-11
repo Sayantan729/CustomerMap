@@ -22,6 +22,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 
 import { MatNativeDateModule } from '@angular/material/core';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angular-datetime-picker';
+import { VehicleNumberDialogComponent } from './vehicle-number-dialog/vehicle-number-dialog.component';
 
  
 
@@ -37,6 +38,7 @@ export function playerFactory() {
     BookingSuccessDialogComponent,
     BookingFailedDialogComponent,
     BookingDetailsFormComponent,
+    VehicleNumberDialogComponent,
     
   ],
   imports: [
